@@ -4,12 +4,12 @@ from typing import Tuple, List, Union
 from time import sleep
 import logging
 from abc import ABC, abstractmethod
-from models import Message, Tool
 import pandas as pd
 import json
 from enum import Enum
 
-from utils import to_json, to_dict
+from .models import Message, Tool
+from .utils import to_json, to_dict
 
 BASE_MODEL="deepseek/deepseek-chat:free"
 
@@ -153,7 +153,9 @@ class OpenRouterChatbot(BaseChatbot):
         if self.is_model_free:
             # add tools to the prompt
             if tools:
-                messages[0].content+=self.add_tools(tools)
+                for message in messages:
+                    if message.role == 'user':
+                        message.content+=self.add_tools(tools)
 
             data = {
                 "model": self.model,

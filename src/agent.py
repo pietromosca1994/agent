@@ -1,11 +1,9 @@
 import logging
 from typing import List, Union
-from abc import ABC, abstractmethod
 from enum import Enum
 
-from chatbot import BaseChatbot, OpenRouterChatbot, BASE_MODEL, Formats
-from models import Tool, ToolCall, Message
-from utils import parse_tool_calls
+from .chatbot import BaseChatbot, OpenRouterChatbot, BASE_MODEL, Formats
+from .models import Tool, ToolCall, Message
 
 class StatusCode(Enum): 
     SUCCESS=0
@@ -66,8 +64,10 @@ class BaseAgent(BaseChatbot):
         
         prompt=self.get_prompt(content)
         
-        messages=[Message('system', self.purpose),
-                  Message('user', prompt)]
+        messages=[
+            Message('user', prompt),
+            Message('system', self.purpose),
+                  ]
         
         response=super().chat(messages,
                               tools=None, 

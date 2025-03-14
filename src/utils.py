@@ -1,12 +1,11 @@
 import json
-from typing import List, Callable
+from typing import List, Callable, Union
 import pickle
 from types import SimpleNamespace
 from functools import wraps
 import inspect
-from typing import Union
 
-from models import FunctionCall, ToolCall, Tool, Property, Function, Parameters, Descriptions
+from .models import FunctionCall, ToolCall, Tool, Property, Function, Parameters, Descriptions
 
 def to_json(string: str):
     string = string.replace('\n```', '')
