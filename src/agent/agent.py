@@ -141,6 +141,7 @@ class BaseAgent(BaseChatbot):
                     result = method(**arguments)
                     if result:
                         self.state[action["id"]]['result'] = result
+                        self.state[action['id']]['status']=StatusCode.SUCCESS.value
                         self.logger.debug(f"Result from {function_name}: {result}")
                 except Exception as e:
                     self.state[action['id']]['status']=StatusCode.EXECUTION_ERROR.value
