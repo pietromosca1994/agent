@@ -1,18 +1,16 @@
 import logging
 from typing import List, Union
-from abc import ABC, abstractmethod
 from enum import Enum
 
-from chatbot import BaseChatbot, OpenRouterChatbot, BASE_MODEL, Formats
-from models import Tool, ToolCall, Message
-from utils import parse_tool_calls
+from .chatbot import BaseChatbot, OpenRouterChatbot, BASE_MODEL, Formats
+from .models import Tool, ToolCall, Message
 
 class StatusCode(Enum): 
-    SUCCESS=0
-    WAITING=1
-    ARGPARSE_ERROR=2
-    EXECUTION_ERROR=3
-    NOT_IMPLEMENTED_ERROR=4
+    SUCCESS='success'
+    WAITING='waiting'
+    ARGPARSE_ERROR='argparse_error'
+    EXECUTION_ERROR='execution_error'
+    NOT_IMPLEMENTED_ERROR='not_implemented_error'
 
 class BaseAgent(BaseChatbot):
     def __init__(self,
@@ -66,8 +64,10 @@ class BaseAgent(BaseChatbot):
         
         prompt=self.get_prompt(content)
         
-        messages=[Message('system', self.purpose),
-                  Message('user', prompt)]
+        messages=[
+            Message('user', prompt),
+            Message('system', self.purpose),
+                  ]
         
         response=super().chat(messages,
                               tools=None, 

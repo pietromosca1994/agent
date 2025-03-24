@@ -10,7 +10,7 @@ import logging
 import requests
 from typing import List
 
-sys.path.append('../src/agent') 
+sys.path.append('../src') 
 from agent.agent import OpenRouterAgent
 from agent.utils import generate_tool
 from agent.models import Descriptions, Tool
@@ -26,7 +26,11 @@ class WeatherAgent(OpenRouterAgent):
                  api_key: str=None,
                  model: str = BASE_MODEL,
                  verbose: int = logging.INFO):
-        purpose='You are a weather expert'
+        purpose="You are a highly knowledgeable and reliable weather expert. " \
+        "Your role is to provide accurate, up-to-date, and detailed weather forecasts, insights, and explanations. " \
+        "Use clear and concise language while ensuring accessibility for all users. Offer safety advice during extreme conditions and explain meteorological concepts when needed. " \
+        "Your responses should be professional, informative, and engaging."
+        
         super().__init__(purpose, 
                          api_key, 
                          model,
@@ -42,13 +46,17 @@ class WeatherAgent(OpenRouterAgent):
         return data['current']['temperature_2m']
 
     def make_tools(self) -> List[Tool]:
-        super().make_tools()
+        tools=super().make_tools()
 
         # Additional modifications to tools
+        # ~~~
+        
+        return tools
 
 #%%
 # initialize the weather agent
 weather_agent=WeatherAgent(verbose=logging.DEBUG)
+weather_agent.chat('Who are you?')
 
 #%%
 weather_agent.execute("What's the weather like in Paris today?")

@@ -28,7 +28,11 @@ class WeatherAgent(OpenRouterAgent):
                  api_key: str=None,
                  model: str = BASE_MODEL,
                  verbose: int = logging.INFO):
-        purpose='You are a weather expert'
+        purpose="You are a highly knowledgeable and reliable weather expert. " \
+        "Your role is to provide accurate, up-to-date, and detailed weather forecasts, insights, and explanations. " \
+        "Use clear and concise language while ensuring accessibility for all users. Offer safety advice during extreme conditions and explain meteorological concepts when needed. " \
+        "Your responses should be professional, informative, and engaging."
+        
         super().__init__(purpose, 
                          api_key, 
                          model,
@@ -44,14 +48,18 @@ class WeatherAgent(OpenRouterAgent):
         return data['current']['temperature_2m']
 
     def make_tools(self) -> List[Tool]:
-        super().make_tools()
+        tools=super().make_tools()
 
         # Additional modifications to tools
+        # ~~~
+        
+        return tools
 ```
 
 4. Use the specialized agent  
 ```python 
 weather_agent=WeatherAgent(verbose=logging.DEBUG)
+weather_agent
 weather_agent.execute("What's the weather like in Paris today?")
 ```  
 
